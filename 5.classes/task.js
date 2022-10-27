@@ -11,12 +11,14 @@ class PrintEditionItem {
         this.state = this.state * 1.5;
     }
 
-    set changeState(state) {
-        this.state = state;
+    set state(state) {
+        if (state < 0) return this._state = 0;
+        else if (state > 100) return this._state = 100;
+        this._state = state;
     }
 
-    get checkState() {
-        return this.state;
+    get state() {
+        return this._state;
     }
 }
 
@@ -31,6 +33,7 @@ class Book extends PrintEditionItem {
     constructor(author, name, releaseDate, pagesCount) {
         super(name, releaseDate, pagesCount);
         this.type = "book";
+        this.author = author;
     }
 }
 
@@ -53,7 +56,7 @@ class DetectiveBook extends Book {
 class FantasticBook extends Book {
     constructor(author, name, releaseDate, pagesCount) {
         super(author, name, releaseDate, pagesCount);
-        this.type = "fantactic";
+        this.type = "fantastic";
         this.author = author;
     }
 }
@@ -84,7 +87,7 @@ class Library {
     giveBookByName(bookName) {
         for (let i = 0; i < this.books.length; i++) {
             if(this.books[i].name === bookName) {
-                return this.books.splice(i, 1);
+                return this.books.splice(i, 1)[0];
             }
         }
         return null;
@@ -98,7 +101,7 @@ class Student {
     }
 
     addMark(mark, subject) {
-        if (mark < 1 && mark > 5) return console.log("Оценка должна быть от 1 до 5!");
+        if (mark < 1 || mark > 5) return console.log("Оценка должна быть от 1 до 5!");
         for (let i = 0; i < this.marks.length; i++) {
             if (this.marks[i].includes(subject)) {
                 return this.marks[i].push(mark);
